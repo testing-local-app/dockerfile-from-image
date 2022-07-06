@@ -1,4 +1,4 @@
-FROM alpine:3.12.0
+FROM --platform=$BUILDPLATFORM node:lts-alpine as build
 MAINTAINER CenturyLink Labs <clt-labs-futuretech@centurylink.com>
 
 RUN apk --update add ruby-dev ca-certificates && \
