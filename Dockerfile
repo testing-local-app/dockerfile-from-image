@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM node:lts-alpine as build
+FROM webdevops/base:ubuntu-18.04
 MAINTAINER CenturyLink Labs <clt-labs-futuretech@centurylink.com>
 
 RUN apk --update add ruby-dev ca-certificates && \
