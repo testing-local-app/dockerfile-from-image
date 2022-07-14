@@ -1,13 +1,14 @@
-FROM webdevops/base:ubuntu-18.04
-MAINTAINER CenturyLink Labs <clt-labs-futuretech@centurylink.com>
+FROM stefanscherer/openjdk-windows:8-windowsservercore
 
-RUN apk --update add ruby-dev ca-certificates && \
-    gem install --no-rdoc --no-ri docker-api && \
-    apk del ruby-dev ca-certificates && \
-    apk add ruby ruby-json && \
-    rm /var/cache/apk/*
+SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 
-ADD dockerfile-from-image.rb /usr/src/app/dockerfile-from-image.rb
+ENV ELASTICSEARCH_VERSION 5.0.1
+ENV ELASTICSEARCH_HOME C:\\elasticsearch-${ELASTICSEARCH_VERSION}
 
-ENTRYPOINT ["/usr/src/app/dockerfile-from-image.rb"]
-CMD ["--help"]
+RUN (New-Object System.Net.WebClient).DownloadFile('https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-{0}.zip' -f $env:ELASTICSEARCH_VERSION, 'elasticsearch.zip') ; \
+    Expand-Archive elasticsearch.zip -DestinationPath C:\ ; \
+    $env:PATH = '{0}\bin;{1}' -f $env:ELASTICSEARCH_HOME, $env:PATH ; \
+    [Environment]::SetEnvironmentVariable('PATH', $env:PATH, [EnvironmentVariableTarget]::Machine) ; \
+    Remove-Item -Path elasticsearch.zip
+
+CMD ["elasticsearch.bat"]
