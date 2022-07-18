@@ -1,4 +1,3 @@
-# FROM stefanscherer/openjdk-windows:8-windowsservercore
 FROM mysql:5
 
 
