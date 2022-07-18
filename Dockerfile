@@ -1,4 +1,6 @@
-FROM stefanscherer/openjdk-windows:8-windowsservercore
+# FROM stefanscherer/openjdk-windows:8-windowsservercore
+FROM mysql:5
+
 
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 
